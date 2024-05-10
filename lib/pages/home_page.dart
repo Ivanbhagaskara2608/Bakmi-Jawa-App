@@ -98,80 +98,85 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      mainAxisExtent: 185,
+                      mainAxisExtent: 175,
                       crossAxisCount: 2,
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 15),
                   itemCount: 4,
                   itemBuilder: (context, index) {
-                    return Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: const [
-                            BoxShadow(
-                                color: Colors.grey,
-                                blurRadius: 5,
-                                offset: Offset(0, 3))
-                          ]),
-                      child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Center(
-                              child: SizedBox(
-                                height: 90,
-                                width: double.infinity,
-                                child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(15),
-                                    child: Image.asset(
-                                      "assets/images/nasgor.jpg",
-                                      fit: BoxFit.cover,
-                                    )),
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, "/detail-menu");
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: const [
+                              BoxShadow(
+                                  color: Colors.grey,
+                                  blurRadius: 5,
+                                  offset: Offset(0, 3))
+                            ]),
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Center(
+                                child: SizedBox(
+                                  height: 90,
+                                  width: double.infinity,
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(15),
+                                      child: Image.asset(
+                                        "assets/images/nasgor.jpg",
+                                        fit: BoxFit.cover,
+                                      )),
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 2),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 5),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Menu $index',
-                                      style: const TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold)),
-                                  const Text(
-                                      "lorem ipsum dolor sit amet, consectetur ssss.",
-                                      style: TextStyle(fontSize: 8)),
-                                  const SizedBox(height: 5),
-                                  Row(
-                                    children: [
-                                      const Text(
-                                        "Rp13000",
-                                        style: TextStyle(
+                              const SizedBox(height: 2),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Menu $index',
+                                        style: const TextStyle(
                                             fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                            color: AppColors.primaryColor),
-                                      ),
-                                      const Spacer(),
-                                      CircleAvatar(
-                                        backgroundColor: AppColors.primaryColor,
-                                        radius: 15,
-                                        child: IconButton(
-                                          padding: EdgeInsets.zero,
-                                          icon: const Icon(Icons.add),
-                                          color: Colors.white,
-                                          onPressed: () {},
+                                            fontWeight: FontWeight.bold)),
+                                    const Text(
+                                        "lorem ipsum dolor sit amet, consectetur ssss.",
+                                        style: TextStyle(fontSize: 8)),
+                                    const SizedBox(height: 5),
+                                    Row(
+                                      children: [
+                                        const Text(
+                                          "Rp13000",
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold,
+                                              color: AppColors.primaryColor),
                                         ),
-                                      ),
-                                    ],
-                                  )
-                                ],
+                                        const Spacer(),
+                                        CircleAvatar(
+                                          backgroundColor: AppColors.primaryColor,
+                                          radius: 15,
+                                          child: IconButton(
+                                            padding: EdgeInsets.zero,
+                                            icon: const Icon(Icons.add),
+                                            color: Colors.white,
+                                            onPressed: () {},
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     );
