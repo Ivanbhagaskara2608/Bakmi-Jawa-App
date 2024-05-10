@@ -9,6 +9,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  TextEditingController searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,9 +57,14 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
+                    const Spacer(),
                     ElevatedButton(
                         onPressed: () {},
                         style: ButtonStyle(
+                            elevation: MaterialStateProperty.all(5),
+                            shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10))),
                             backgroundColor: MaterialStateProperty.all(
                                 AppColors.primaryColor)),
                         child: const Row(
@@ -74,6 +81,102 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
+            const SizedBox(height: 15),
+            SearchBar(
+              controller: searchController,
+              hintText: "Cari menu disini",
+              elevation: const MaterialStatePropertyAll(0),
+              leading: const Icon(Icons.search),
+              textStyle:
+                  MaterialStateProperty.all(const TextStyle(fontSize: 13)),
+              padding: const MaterialStatePropertyAll(
+                  EdgeInsets.symmetric(horizontal: 15)),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Expanded(
+              child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      mainAxisExtent: 185,
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 15),
+                  itemCount: 4,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: const [
+                            BoxShadow(
+                                color: Colors.grey,
+                                blurRadius: 5,
+                                offset: Offset(0, 3))
+                          ]),
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Center(
+                              child: SizedBox(
+                                height: 90,
+                                width: double.infinity,
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(15),
+                                    child: Image.asset(
+                                      "assets/images/nasgor.jpg",
+                                      fit: BoxFit.cover,
+                                    )),
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Menu $index',
+                                      style: const TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold)),
+                                  const Text(
+                                      "lorem ipsum dolor sit amet, consectetur ssss.",
+                                      style: TextStyle(fontSize: 8)),
+                                  const SizedBox(height: 5),
+                                  Row(
+                                    children: [
+                                      const Text(
+                                        "Rp13000",
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                            color: AppColors.primaryColor),
+                                      ),
+                                      const Spacer(),
+                                      CircleAvatar(
+                                        backgroundColor: AppColors.primaryColor,
+                                        radius: 15,
+                                        child: IconButton(
+                                          padding: EdgeInsets.zero,
+                                          icon: const Icon(Icons.add),
+                                          color: Colors.white,
+                                          onPressed: () {},
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
+            )
           ],
         ),
       ),
