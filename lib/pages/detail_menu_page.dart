@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:aplikasi_bakmi_jawa/models/menu.dart';
+import 'package:aplikasi_bakmi_jawa/services/base_client.dart';
 import 'package:aplikasi_bakmi_jawa/utils/color.dart';
+import 'package:flutter/material.dart';
 
 class DetailMenuPage extends StatefulWidget {
   const DetailMenuPage({super.key});
@@ -27,6 +29,8 @@ class _DetailMenuPageState extends State<DetailMenuPage> {
 
   @override
   Widget build(BuildContext context) {
+    final Menu menu = ModalRoute.of(context)!.settings.arguments as Menu;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -42,26 +46,37 @@ class _DetailMenuPageState extends State<DetailMenuPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
-                child: ClipRRect(
-              borderRadius: BorderRadius.circular(15),
-              child: Image.asset(
-                "assets/images/nasgor.jpg",
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Image.network(
+                  "$baseUrl/menu/image/${menu.gambar}",
+                  scale: 2,
+                  fit: BoxFit.cover,
+                  errorBuilder: (BuildContext context, Object exception,
+                      StackTrace? stackTrace) {
+                    return const Center(
+                      child: Icon(Icons.error, color: Colors.red),
+                    );
+                  },
+                ),
               ),
-            )),
+            ),
             const SizedBox(height: 20),
-            const Row(
+            Row(
               children: [
                 Text(
-                  "Nasi Goreng",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  menu.nama,
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                Spacer(),
+                const Spacer(),
                 Text(
-                  "Rp 13.000",
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primaryColor),
+                  "Rp ${menu.harga}",
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primaryColor,
+                  ),
                 ),
               ],
             ),
@@ -77,8 +92,9 @@ class _DetailMenuPageState extends State<DetailMenuPage> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   decoration: BoxDecoration(
-                      color: AppColors.primaryColor,
-                      borderRadius: BorderRadius.circular(10)),
+                    color: AppColors.primaryColor,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   child: const Text(
                     "Ati ampela",
                     style: TextStyle(color: Colors.white),
@@ -89,8 +105,9 @@ class _DetailMenuPageState extends State<DetailMenuPage> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   decoration: BoxDecoration(
-                      color: AppColors.primaryColor,
-                      borderRadius: BorderRadius.circular(10)),
+                    color: AppColors.primaryColor,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   child: const Text(
                     "Kepala",
                     style: TextStyle(color: Colors.white),
@@ -104,9 +121,9 @@ class _DetailMenuPageState extends State<DetailMenuPage> {
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
-            const Text(
-              "Nasi goreng adalah makanan yang terbuat dari nasi yang digoreng dan dicampur dengan bumbu-bumbu tertentu. Nasi goreng adalah makanan yang terbuat dari nasi yang digoreng dan dicampur dengan bumbu-bumbu tertentu.",
-              style: TextStyle(fontSize: 14),
+            Text(
+              menu.deskripsi,
+              style: const TextStyle(fontSize: 14),
             ),
             const Spacer(),
             Padding(
@@ -117,19 +134,19 @@ class _DetailMenuPageState extends State<DetailMenuPage> {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     child: Row(
                       children: [
                         Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                              color: AppColors.primaryColor,
-                              borderRadius: BorderRadius.circular(10)),
+                            color: AppColors.primaryColor,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           child: InkWell(
-                            onTap: () {
-                              decreaseItem();
-                            },
+                            onTap: decreaseItem,
                             child: const Icon(
                               Icons.remove,
                               color: Colors.white,
@@ -144,12 +161,11 @@ class _DetailMenuPageState extends State<DetailMenuPage> {
                         Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                              color: AppColors.primaryColor,
-                              borderRadius: BorderRadius.circular(10)),
+                            color: AppColors.primaryColor,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           child: InkWell(
-                            onTap: () {
-                              increaseItem();
-                            },
+                            onTap: increaseItem,
                             child: const Icon(
                               Icons.add,
                               color: Colors.white,
@@ -164,19 +180,24 @@ class _DetailMenuPageState extends State<DetailMenuPage> {
                   ElevatedButton(
                     onPressed: () {},
                     style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(AppColors.primaryColor),
-                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10))),
-                        elevation: MaterialStateProperty.all(5)),
+                      backgroundColor:
+                          MaterialStateProperty.all(AppColors.primaryColor),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      elevation: MaterialStateProperty.all(5),
+                    ),
                     child: const Padding(
                       padding: EdgeInsets.symmetric(vertical: 10),
                       child: Text(
                         "Tambah ke keranjang",
                         style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),

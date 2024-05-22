@@ -1,4 +1,7 @@
+import 'package:aplikasi_bakmi_jawa/models/user.dart';
+import 'package:aplikasi_bakmi_jawa/services/db/db_helper.dart';
 import 'package:aplikasi_bakmi_jawa/utils/color.dart';
+import 'package:aplikasi_bakmi_jawa/utils/util.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -9,6 +12,20 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  User? userData;
+  void getData() async {
+    final user = await DBHelper.getUser();
+    setState(() {
+      userData = user;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,25 +50,25 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
-            const Text(
-              "Ivan Bhagaskara",
-              style: TextStyle(fontWeight: FontWeight.bold),
+            Text(
+              userData?.nama ?? "undefined",
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 5),
-            const Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Icon(
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              const Icon(
                 Icons.phone,
                 size: 12,
               ),
-              Text("+628123456789")
+              Text("+62${userData?.noTelp ?? "undefined"}")
             ]),
             const SizedBox(height: 5),
-            const Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Icon(
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              const Icon(
                 Icons.cake,
                 size: 12,
               ),
-              Text("26 Agustus 2003")
+              Text(userData?.tanggalLahir ?? "undefined")
             ]),
             const SizedBox(height: 40),
             Padding(

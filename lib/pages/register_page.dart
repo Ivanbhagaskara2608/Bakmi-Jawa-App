@@ -1,4 +1,9 @@
+import 'dart:convert';
+
+import 'package:aplikasi_bakmi_jawa/models/api_response.dart';
+import 'package:aplikasi_bakmi_jawa/services/base_client.dart';
 import 'package:aplikasi_bakmi_jawa/utils/color.dart';
+import 'package:aplikasi_bakmi_jawa/utils/util.dart';
 import 'package:aplikasi_bakmi_jawa/widgets/custom_textfield.dart';
 import 'package:aplikasi_bakmi_jawa/widgets/custom_textfield_calendar.dart';
 import 'package:aplikasi_bakmi_jawa/widgets/custom_textfield_password.dart';
@@ -85,8 +90,33 @@ class _RegisterPageState extends State<RegisterPage> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
+                        onPressed: () async {
+                          // Navigator.pop(context);
+                          var response = await BaseClient().post(
+                              'user/register',
+                              jsonEncode({
+                                "nama": nameController.text,
+                                "no_telp": phoneController.text,
+                                "tanggal_lahir": birthdateController.text,
+                                "password": passwordController.text,
+                                "password_confirmation":
+                                    passwordConfirmController.text,
+                              }));
+
+                          ApiResponse<dynamic> apiResponse =
+                              ApiResponse.fromJson(
+                            json.decode(response.body),
+                            (data) => data,
+                          );
+
+                          if (response.statusCode == 200 &&
+                              apiResponse.status == true) {
+                            showToast(apiResponse.message);
+                            // ignore: use_build_context_synchronously
+                            Navigator.pop(context);
+                          } else {
+                            showToast("Gagal mendaftar, silahkan coba lagi");
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primaryColor,

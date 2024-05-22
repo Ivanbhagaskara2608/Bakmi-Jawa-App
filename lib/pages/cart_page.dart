@@ -1,3 +1,6 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:aplikasi_bakmi_jawa/services/shared_preferences.dart';
 import 'package:aplikasi_bakmi_jawa/utils/color.dart';
 import 'package:flutter/material.dart';
 
@@ -28,6 +31,30 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: SizedBox(
+          height: 40,
+          width: 160,
+          child: FloatingActionButton.extended(
+              onPressed: () async{
+                final token = await SharedPreferencesHelper.getToken();
+                if (token != null) {
+                  Navigator.pushNamed(context, '/checkout');
+                } else {
+                  Navigator.pushNamed(context, '/login');
+                }
+              },
+              backgroundColor: AppColors.primaryColor,
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(30))),
+              label: const Text(
+                "Checkout",
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              )),
+        ),
         appBar: AppBar(
           title: const Text(
             "Keranjang",

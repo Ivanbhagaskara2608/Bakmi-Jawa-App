@@ -32,6 +32,18 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             CustomTextFieldPassword(controller: currentPasswordController, title: "Password Saat Ini",),
             CustomTextFieldPassword(controller: newPasswordController, title: "Password Baru",),
             CustomTextFieldPassword(controller: confirmNewPasswordController, title: "Konfirmasi Password Baru",),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () async {},
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primaryColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10))),
+                child: const Text("Simpan",
+                    style: TextStyle(fontSize: 16, color: Colors.white)),
+              ),
+            )
           ],
         ),
       ),);

@@ -5,6 +5,7 @@ import 'package:aplikasi_bakmi_jawa/pages/edit_profile_page.dart';
 import 'package:aplikasi_bakmi_jawa/pages/login_page.dart';
 import 'package:aplikasi_bakmi_jawa/pages/register_page.dart';
 import 'package:aplikasi_bakmi_jawa/pages/splashscreen_page.dart';
+import 'package:aplikasi_bakmi_jawa/pages/checkout_page.dart';
 import 'package:aplikasi_bakmi_jawa/utils/color.dart';
 import 'package:flutter/material.dart';
 
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         '/edit-profile': (context) => const EditProfilePage(),
         '/change-password': (context) => const ChangePasswordPage(),
         '/detail-menu': (context) => const DetailMenuPage(),
+        '/checkout': (context) => const CheckoutPage(),
       },
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

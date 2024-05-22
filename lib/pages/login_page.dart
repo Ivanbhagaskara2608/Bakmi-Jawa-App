@@ -1,4 +1,12 @@
+import 'dart:convert';
+
+import 'package:aplikasi_bakmi_jawa/models/api_response.dart';
+import 'package:aplikasi_bakmi_jawa/models/user.dart';
+import 'package:aplikasi_bakmi_jawa/services/base_client.dart';
+import 'package:aplikasi_bakmi_jawa/services/db/db_helper.dart';
+import 'package:aplikasi_bakmi_jawa/services/shared_preferences.dart';
 import 'package:aplikasi_bakmi_jawa/utils/color.dart';
+import 'package:aplikasi_bakmi_jawa/utils/util.dart';
 import 'package:aplikasi_bakmi_jawa/widgets/custom_textfield_password.dart';
 import 'package:aplikasi_bakmi_jawa/widgets/custom_textfield_phone.dart';
 import 'package:flutter/material.dart';
@@ -74,9 +82,36 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, "/dashboard", (route) => false);
+                        onPressed: () async {
+                          var response = await BaseClient().post(
+                              "user/login",
+                              jsonEncode({
+                                "no_telp": phoneController.text,
+                                "password": passwordController.text
+                              }));
+
+                          ApiResponse<dynamic> apiResponse =
+                              ApiResponse.fromJson(
+                            json.decode(response.body),
+                            (data) => data,
+                          );
+
+                          if (response.statusCode == 200 &&
+                              apiResponse.status == true) {
+                            final token = apiResponse.data['token'];
+                            final user = User.fromJson(
+                                json.decode(response.body)['data']['user']);
+                            await DBHelper.addUser(user);
+                            SharedPreferencesHelper.saveToken(token);
+                            showToast(apiResponse.message);
+                            Navigator.pushNamedAndRemoveUntil(
+                                // ignore: use_build_context_synchronously
+                                context,
+                                "/dashboard",
+                                (route) => false);
+                          } else {
+                            showToast("Gagal masuk");
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primaryColor,
