@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
 
-const String baseUrl = 'https://ba23-180-254-95-173.ngrok-free.app/api';
+const String baseUrl = 'https://carefully-awake-mullet.ngrok-free.app/api';
 
 class BaseClient {
   var client = http.Client();

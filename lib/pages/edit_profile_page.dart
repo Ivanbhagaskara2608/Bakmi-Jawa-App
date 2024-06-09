@@ -9,7 +9,6 @@ import 'package:aplikasi_bakmi_jawa/utils/color.dart';
 import 'package:aplikasi_bakmi_jawa/utils/util.dart';
 import 'package:aplikasi_bakmi_jawa/widgets/custom_textfield.dart';
 import 'package:aplikasi_bakmi_jawa/widgets/custom_textfield_calendar.dart';
-import 'package:aplikasi_bakmi_jawa/widgets/custom_textfield_phone.dart';
 import 'package:flutter/material.dart';
 
 class EditProfilePage extends StatefulWidget {
@@ -21,7 +20,6 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   final TextEditingController nameController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
   final TextEditingController birthDateController = TextEditingController();
   User? userData;
 
@@ -31,7 +29,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       userData = user;
       // Update text controllers after userData is set
       nameController.text = userData?.nama ?? "";
-      phoneController.text = userData?.noTelp ?? "";
       birthDateController.text = userData?.tanggalLahir ?? "";
     });
   }
@@ -60,7 +57,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
             const SizedBox(height: 20),
             Center(child: Image.asset("assets/images/user.png", scale: 4)),
             const SizedBox(height: 40),
-            CustomTextFieldPhone(controller: phoneController),
             CustomTextField(controller: nameController, title: "Nama"),
             CustomTextFieldCalendar(
                 controller: birthDateController, title: "Tanggal Lahir"),
@@ -74,7 +70,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       'user/update-profile',
                       jsonEncode({
                         "nama": nameController.text,
-                        "no_telp": phoneController.text,
                         "tanggal_lahir": birthDateController.text
                       }),
                       token!);

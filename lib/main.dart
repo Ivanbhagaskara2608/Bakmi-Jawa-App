@@ -1,9 +1,11 @@
 import 'package:aplikasi_bakmi_jawa/pages/change_password_page.dart';
 import 'package:aplikasi_bakmi_jawa/pages/dashboard_page.dart';
 import 'package:aplikasi_bakmi_jawa/pages/detail_menu_page.dart';
+import 'package:aplikasi_bakmi_jawa/pages/detail_reward_page.dart';
 import 'package:aplikasi_bakmi_jawa/pages/edit_profile_page.dart';
 import 'package:aplikasi_bakmi_jawa/pages/login_page.dart';
 import 'package:aplikasi_bakmi_jawa/pages/register_page.dart';
+import 'package:aplikasi_bakmi_jawa/pages/reward_page.dart';
 import 'package:aplikasi_bakmi_jawa/pages/splashscreen_page.dart';
 import 'package:aplikasi_bakmi_jawa/pages/checkout_page.dart';
 import 'package:aplikasi_bakmi_jawa/utils/color.dart';
@@ -29,6 +31,8 @@ class MyApp extends StatelessWidget {
         '/change-password': (context) => const ChangePasswordPage(),
         '/detail-menu': (context) => const DetailMenuPage(),
         '/checkout': (context) => const CheckoutPage(),
+        '/reward': (context) => const RewardPage(),
+        '/detail-reward': (context) => const DetailRewardPage(),
       },
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

@@ -4,7 +4,9 @@ import 'dart:convert';
 
 import 'package:aplikasi_bakmi_jawa/models/api_response.dart';
 import 'package:aplikasi_bakmi_jawa/models/menu.dart';
+import 'package:aplikasi_bakmi_jawa/models/user.dart';
 import 'package:aplikasi_bakmi_jawa/services/base_client.dart';
+import 'package:aplikasi_bakmi_jawa/services/db/db_helper.dart';
 import 'package:aplikasi_bakmi_jawa/utils/color.dart';
 import 'package:aplikasi_bakmi_jawa/widgets/card_menu.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   List<Menu> filteredMenus = [];
   bool isLoading = true;
   bool hasError = false;
+  String selectedCategory = 'Semua';
 
   Future<void> getMenu() async {
     setState(() {
@@ -56,11 +59,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   void filterMenus(String query) {
-    List<Menu> tempMenus = [];
-    if (query.isEmpty) {
-      tempMenus = menus;
-    } else {
-      tempMenus = menus.where((menu) {
+    List<Menu> tempMenus = menus;
+    if (selectedCategory != 'Semua') {
+      tempMenus = tempMenus.where((menu) {
+        return menu.kategori == selectedCategory;
+      }).toList();
+    }
+    if (query.isNotEmpty) {
+      tempMenus = tempMenus.where((menu) {
         return menu.nama.toLowerCase().contains(query.toLowerCase());
       }).toList();
     }
@@ -69,10 +75,26 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void filterByCategory(String category) {
+    setState(() {
+      selectedCategory = category;
+    });
+    filterMenus(searchController.text);
+  }
+
+  User? userData;
+  void getData() async {
+    final user = await DBHelper.getUser();
+    setState(() {
+      userData = user;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     getMenu();
+    getData();
     searchController.addListener(() {
       filterMenus(searchController.text);
     });
@@ -91,9 +113,9 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Hi, Ivan Bhagaskara",
-                style: TextStyle(fontSize: 18),
+              Text(
+                "Hi, ${userData?.nama ?? "undefined"}",
+                style: const TextStyle(fontSize: 18),
               ),
               const SizedBox(height: 15),
               Container(
@@ -110,10 +132,10 @@ class _HomePageState extends State<HomePage> {
                         scale: 8,
                       ),
                       const SizedBox(width: 10),
-                      const Column(
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             "Poin Kamu",
                             style: TextStyle(
                                 fontSize: 16,
@@ -121,8 +143,8 @@ class _HomePageState extends State<HomePage> {
                                 fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            "1000 Pts",
-                            style: TextStyle(
+                            "${userData?.point ?? 0} Pts",
+                            style: const TextStyle(
                                 fontSize: 18,
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
@@ -131,13 +153,15 @@ class _HomePageState extends State<HomePage> {
                       ),
                       const Spacer(),
                       ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/reward');
+                          },
                           style: ButtonStyle(
-                              elevation: MaterialStateProperty.all(5),
-                              shape: MaterialStateProperty.all(
+                              elevation: WidgetStateProperty.all(5),
+                              shape: WidgetStateProperty.all(
                                   RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10))),
-                              backgroundColor: MaterialStateProperty.all(
+                              backgroundColor: WidgetStateProperty.all(
                                   AppColors.primaryColor)),
                           child: const Row(
                             children: [
@@ -156,15 +180,122 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 15),
               SearchBar(
                 controller: searchController,
+                backgroundColor: WidgetStateProperty.all(Colors.white),
                 hintText: "Cari menu disini",
-                elevation: const MaterialStatePropertyAll(0),
+                elevation: const WidgetStatePropertyAll(0),
                 leading: const Icon(Icons.search),
                 textStyle:
-                    MaterialStateProperty.all(const TextStyle(fontSize: 13)),
-                padding: const MaterialStatePropertyAll(
+                    WidgetStateProperty.all(const TextStyle(fontSize: 13)),
+                padding: const WidgetStatePropertyAll(
                     EdgeInsets.symmetric(horizontal: 15)),
               ),
               const SizedBox(height: 15),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () => filterByCategory('Semua'),
+                    child: Container(
+                      width: 80,
+                      height: 74,
+                      margin: const EdgeInsets.only(right: 10),
+                      decoration: BoxDecoration(
+                        color: selectedCategory == 'Semua'
+                            ? AppColors.primaryColor
+                            : Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset("assets/images/all-menu.png", scale: 4),
+                          Text("Semua",
+                              style: TextStyle(
+                                  color: selectedCategory == 'Semua'
+                                      ? Colors.white
+                                      : Colors.black)),
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () => filterByCategory('Makanan'),
+                    child: Container(
+                      width: 80,
+                      height: 74,
+                      margin: const EdgeInsets.only(right: 10),
+                      decoration: BoxDecoration(
+                        color: selectedCategory == 'Makanan'
+                            ? AppColors.primaryColor
+                            : Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset("assets/images/food-menu.png", scale: 4),
+                          Text("Makanan",
+                              style: TextStyle(
+                                  color: selectedCategory == 'Makanan'
+                                      ? Colors.white
+                                      : Colors.black)),
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () => filterByCategory('Minuman'),
+                    child: Container(
+                      width: 80,
+                      height: 74,
+                      margin: const EdgeInsets.only(right: 10),
+                      decoration: BoxDecoration(
+                        color: selectedCategory == 'Minuman'
+                            ? AppColors.primaryColor
+                            : Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset("assets/images/drink-menu.png", scale: 4),
+                          Text("Minuman",
+                              style: TextStyle(
+                                  color: selectedCategory == 'Minuman'
+                                      ? Colors.white
+                                      : Colors.black)),
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () => filterByCategory('Cemilan'),
+                    child: Container(
+                      width: 80,
+                      height: 74,
+                      margin: const EdgeInsets.only(right: 10),
+                      decoration: BoxDecoration(
+                        color: selectedCategory == 'Cemilan'
+                            ? AppColors.primaryColor
+                            : Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset("assets/images/snack-menu.png", scale: 4),
+                          Text("Snack",
+                              style: TextStyle(
+                                  color: selectedCategory == 'Cemilan'
+                                      ? Colors.white
+                                      : Colors.black)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               Expanded(
                 child: isLoading
                     ? const Center(child: CircularProgressIndicator())

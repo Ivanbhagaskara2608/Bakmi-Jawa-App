@@ -3,14 +3,14 @@ import 'package:aplikasi_bakmi_jawa/services/base_client.dart';
 import 'package:aplikasi_bakmi_jawa/utils/color.dart';
 import 'package:flutter/material.dart';
 
-class DetailMenuPage extends StatefulWidget {
-  const DetailMenuPage({super.key});
+class DetailRewardPage extends StatefulWidget {
+  const DetailRewardPage({super.key});
 
   @override
-  State<DetailMenuPage> createState() => _DetailMenuPageState();
+  State<DetailRewardPage> createState() => _DetailRewardPageState();
 }
 
-class _DetailMenuPageState extends State<DetailMenuPage> {
+class _DetailRewardPageState extends State<DetailRewardPage> {
   int itemCount = 1;
 
   void decreaseItem() {
@@ -29,7 +29,10 @@ class _DetailMenuPageState extends State<DetailMenuPage> {
 
   @override
   Widget build(BuildContext context) {
-    final Menu menu = ModalRoute.of(context)!.settings.arguments as Menu;
+    final Map<String, dynamic> arguments =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    final Menu menu = arguments['menu'];
+    final int points = arguments['points'];
 
     return Scaffold(
       appBar: AppBar(
@@ -70,47 +73,17 @@ class _DetailMenuPageState extends State<DetailMenuPage> {
                       fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
+                Image.asset(
+                  "assets/images/reward.png",
+                  scale: 18,
+                ),
+                const SizedBox(width: 5),
                 Text(
-                  "Rp ${menu.harga}",
+                  "${points.toString()} Pts",
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              "Topping",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            Row(
-              children: [
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryColor,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Text(
-                    "Ati ampela",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                const SizedBox(width: 5),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryColor,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Text(
-                    "Kepala",
-                    style: TextStyle(color: Colors.white),
+                    color: AppColors.pointColor,
                   ),
                 ),
               ],
@@ -125,6 +98,7 @@ class _DetailMenuPageState extends State<DetailMenuPage> {
               menu.deskripsi,
               style: const TextStyle(fontSize: 14),
             ),
+            const SizedBox(height: 20),
             const Spacer(),
             Padding(
               padding: const EdgeInsets.only(bottom: 30),
@@ -187,12 +161,12 @@ class _DetailMenuPageState extends State<DetailMenuPage> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      elevation: MaterialStateProperty.all(5),
+                      elevation: WidgetStateProperty.all(5),
                     ),
                     child: const Padding(
                       padding: EdgeInsets.symmetric(vertical: 10),
                       child: Text(
-                        "Tambah ke keranjang",
+                        "Checkout",
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,

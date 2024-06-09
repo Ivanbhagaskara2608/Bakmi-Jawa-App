@@ -1,7 +1,6 @@
 import 'package:aplikasi_bakmi_jawa/models/user.dart';
 import 'package:aplikasi_bakmi_jawa/services/db/db_helper.dart';
 import 'package:aplikasi_bakmi_jawa/utils/color.dart';
-import 'package:aplikasi_bakmi_jawa/utils/util.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
